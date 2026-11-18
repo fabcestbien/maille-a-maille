@@ -1,7 +1,7 @@
 /* Maille à maille — fonctionnement hors ligne et mises à jour.
    À chaque nouvelle version publiée, augmente VERSION ici
    ET la constante APP_VERSION dans index.html. */
-var VERSION = '3';
+var VERSION = '4';
 var CACHE = 'maille-a-maille-v' + VERSION;
 var ASSETS = [
   './',
