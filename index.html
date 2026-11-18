@@ -170,6 +170,9 @@ input[type="datetime-local"].input{display:block;text-align:left}
   'use strict';
 
   /* ---------- Constantes ---------- */
+  var APP_VERSION = '3';
+  var swReg = null;
+  var pendingReload = false;
   var KEY = 'maille-a-maille:v1';
   var DAY = 86400000;
   var COLORS = [
@@ -537,7 +540,8 @@ input[type="datetime-local"].input{display:block;text-align:left}
       '<p>Tes données sont enregistrées uniquement sur ce téléphone. Exporte-les de temps en temps dans Fichiers ou iCloud Drive pour ne rien perdre.</p>' +
       '<p class="hint">Dernière sauvegarde : ' + backupLabel() + '</p>' +
       '<div class="two"><button type="button" class="btn-sec" data-action="export">' + ui('download', 18, 2) + 'Exporter</button>' +
-      '<button type="button" class="btn-sec" data-action="import">' + ui('upload', 18, 2) + 'Importer</button></div></div></section>';
+      '<button type="button" class="btn-sec" data-action="import">' + ui('upload', 18, 2) + 'Importer</button></div></div></section>' +
+      '<p class="hint" style="text-align:center;margin:24px 0 0">Maille à maille · version ' + APP_VERSION + '</p>';
     html += '</main>' + tabbar('history');
     return html;
   }
@@ -641,6 +645,7 @@ input[type="datetime-local"].input{display:block;text-align:left}
     sheet = null;
     sheetRoot.innerHTML = '';
     document.body.classList.remove('locked');
+    if (pendingReload) { pendingReload = false; location.reload(); }
   }
 
   function saveProject() {
@@ -910,6 +915,7 @@ input[type="datetime-local"].input{display:block;text-align:left}
   window.addEventListener('hashchange', function () { closeSheet(); render(); window.scrollTo(0, 0); });
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'visible') {
+      if (swReg) swReg.update().catch(function () {}); /* iOS réveille l'app sans la recharger : on vérifie les mises à jour */
       data = load(); normalizeRunning();
       render();
       if (sheet && (sheet.type === 'correct') && find(sheet.id)) openSheet(sheet);
@@ -922,7 +928,16 @@ input[type="datetime-local"].input{display:block;text-align:left}
 
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(function () {});
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
-    navigator.serviceWorker.register('sw.js').catch(function () {});
+    var hadController = !!navigator.serviceWorker.controller;
+    var reloading = false;
+    /* Une nouvelle version vient de prendre la main : on recharge une fois, sauf si une saisie est en cours. */
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (!hadController || reloading) return;
+      if (sheet || document.querySelector('.dlg')) { pendingReload = true; return; }
+      reloading = true;
+      location.reload();
+    });
+    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(function (reg) { swReg = reg; }).catch(function () {});
   }
 })();
 </script>
