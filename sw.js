@@ -1,6 +1,6 @@
 /* Maille à maille — fonctionnement hors ligne.
    Change le numéro de version à chaque mise à jour publiée. */
-var CACHE = 'maille-a-maille-v1';
+var CACHE = 'maille-a-maille-v2';
 var ASSETS = [
   './',
   './index.html',

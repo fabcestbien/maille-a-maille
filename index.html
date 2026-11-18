@@ -111,6 +111,7 @@ a{touch-action:manipulation}
 .hint{font-size:14px;font-weight:600;color:var(--text2)}
 .backdrop{position:fixed;inset:0;background:rgba(58,34,24,.45);z-index:20;animation:fade .2s ease}
 .sheet{position:fixed;left:0;right:0;bottom:0;margin:0 auto;max-width:560px;max-height:calc(100dvh - env(safe-area-inset-top) - 24px);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:var(--bg);border-radius:22px 22px 0 0;padding:10px 20px calc(env(safe-area-inset-bottom) + 28px);z-index:21;display:flex;flex-direction:column;gap:18px;animation:up .28s cubic-bezier(.2,.8,.2,1)}
+.sheet > *{flex-shrink:0}
 .sheet.instant,.backdrop.instant{animation:none}
 @keyframes up{from{transform:translateY(100%)}to{transform:none}}
 @keyframes fade{from{opacity:0}}
@@ -130,7 +131,7 @@ input[type="datetime-local"].input{display:block;text-align:left}
 .swatches{display:flex;gap:12px;flex-wrap:wrap;padding:4px}
 .swatch{width:44px;height:44px;border-radius:50%}
 .swatch[aria-pressed="true"]{box-shadow:0 0 0 3px var(--bg),0 0 0 5.5px var(--text)}
-.icon-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.icon-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .icon-choice{height:50px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--text);display:flex;align-items:center;justify-content:center}
 .icon-choice[aria-pressed="true"]{border:2px solid var(--terra);background:var(--tint);color:var(--terra-dark)}
 .switch-row{min-height:56px;border-radius:16px;border:1px solid var(--line);background:var(--surface);padding:0 14px 0 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:16px;font-weight:700;text-align:left;width:100%}
@@ -144,6 +145,7 @@ input[type="datetime-local"].input{display:block;text-align:left}
 .error{margin:0;font-size:14px;line-height:1.4;font-weight:700;color:var(--danger)}
 .error:empty{display:none}
 .readonly{margin:0;min-height:52px;display:flex;align-items:center;padding:10px 16px;border-radius:16px;background:var(--tint);font-size:15px;font-weight:700;color:var(--terra-dark)}
+.danger-btn.spaced{margin-top:12px}
 .danger-btn{min-height:52px;border-radius:16px;border:1px solid #E5C2B8;background:var(--surface);color:var(--danger);font-size:16px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
 .lead{margin:0;font-size:15px;line-height:1.45;font-weight:600;color:var(--text2)}
 .dlg-backdrop{position:fixed;inset:0;background:rgba(58,34,24,.5);z-index:40}
@@ -184,7 +186,9 @@ input[type="datetime-local"].input{display:block;text-align:left}
     gilet: { label: 'Gilet', svg: '<path d="M8.5 4L4 6.5 2.8 14l3.2.5V20h12v-5.5l3.2-.5L20 6.5 15.5 4 12 10z"/><path d="M12 10v10"/><circle cx="13.7" cy="13" r=".6" fill="currentColor"/><circle cx="13.7" cy="16.5" r=".6" fill="currentColor"/>' },
     bonnet: { label: 'Bonnet', svg: '<path d="M5.5 15a6.5 6.5 0 0 1 13 0"/><rect x="4" y="15" width="16" height="4.5" rx="1.5"/><circle cx="12" cy="5.8" r="1.8"/><path d="M8 15v4.5M12 15v4.5M16 15v4.5"/>' },
     echarpe: { label: 'Écharpe', svg: '<path d="M5 5.5c3.5 2 10.5 2 14 0v3c-3.5 2-10.5 2-14 0z"/><path d="M13.5 10.3V19h4V9.6"/><path d="M14.5 19v2M16.5 19v2"/>' },
-    bandeau: { label: 'Bandeau', svg: '<path d="M3 15c0-5 4-8.5 9-8.5s9 3.5 9 8.5"/><path d="M6.5 15.5c0-3.4 2.4-5.5 5.5-5.5s5.5 2.1 5.5 5.5"/><path d="M3 15l3.5.5M21 15l-3.5.5"/><path d="M10.6 6.6l2.8 3.3M13.4 6.6l-2.8 3.3"/>' }
+    bandeau: { label: 'Bandeau', svg: '<path d="M3 15c0-5 4-8.5 9-8.5s9 3.5 9 8.5"/><path d="M6.5 15.5c0-3.4 2.4-5.5 5.5-5.5s5.5 2.1 5.5 5.5"/><path d="M3 15l3.5.5M21 15l-3.5.5"/><path d="M10.6 6.6l2.8 3.3M13.4 6.6l-2.8 3.3"/>' },
+    plaid: { label: 'Couverture / plaid', svg: '<rect x="4" y="3.5" width="16" height="13.5" rx="1.5"/><path d="M4 8h16M4 12.5h16M9.3 3.5V17M14.7 3.5V17"/><path d="M6 17v3.5M9 17v3.5M12 17v3.5M15 17v3.5M18 17v3.5"/>' },
+    divers: { label: 'Divers', svg: '<path d="M5.5 20L18.2 5.8"/><path d="M18.5 20L5.8 5.8"/><circle cx="19" cy="4.8" r="1.7" fill="currentColor"/><circle cx="5" cy="4.8" r="1.7" fill="currentColor"/><path d="M8 15.5c1.3 1.5 2.6 2 4 2s2.7-.5 4-2"/>' }
   };
   var UI = {
     play: '<path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z" fill="currentColor" stroke="none"/>',
@@ -495,7 +499,9 @@ input[type="datetime-local"].input{display:block;text-align:left}
       (p.archivedAt
         ? '<button type="button" class="btn-outline" data-action="unarchive" data-id="' + esc(p.id) + '">' + ui('restore', 18, 2) + 'Remettre en cours</button>'
         : '<button type="button" class="btn-outline" data-action="archive" data-id="' + esc(p.id) + '">' + ui('archive', 18, 2) + 'Terminer</button>') +
-      '</div></main>';
+      '</div>' +
+      (p.archivedAt ? '<button type="button" class="danger-btn spaced" data-action="delete-project" data-id="' + esc(p.id) + '">' + ui('trash', 18, 2) + 'Supprimer le projet</button>' : '') +
+      '</main>';
     return html;
   }
 
@@ -842,7 +848,7 @@ input[type="datetime-local"].input{display:block;text-align:left}
         p.archivedAt = now();
         save();
         location.hash = '#/historique';
-        toast('Projet terminé, bravo !');
+        toast('Projet terminé, bravo !');
       });
     },
     unarchive: function (el) {
@@ -859,6 +865,25 @@ input[type="datetime-local"].input{display:block;text-align:left}
     'delete-session': function () { deleteSession(); },
     'export': function () { exportData(); },
     'import': function () { importData(); },
+    'delete-project': function (el) {
+      var p = find(el.getAttribute('data-id'));
+      if (!p || !p.archivedAt) return;
+      confirmDialog({
+        title: 'Supprimer « ' + p.name + ' » ?',
+        message: (p.sessions.length
+          ? 'Le projet, ' + (p.sessions.length > 1 ? 'ses ' + p.sessions.length + ' séances' : 'sa séance') + ' et son temps total de ' + fmtTotal(totalMs(p)) + ' seront définitivement effacés de l\'historique.'
+          : 'Le projet sera définitivement effacé de l\'historique.') + ' Cette action est irréversible.',
+        confirm: 'Supprimer',
+        destructive: true
+      }).then(function (ok) {
+        if (!ok) return;
+        data.projects.splice(data.projects.indexOf(p), 1);
+        save();
+        location.hash = '#/historique';
+        render();
+        toast('Projet supprimé');
+      });
+    },
     'dismiss-install': function () { data.installDismissed = true; save(); render(); },
     'go-backup': function () {
       location.hash = '#/historique';
